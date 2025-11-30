@@ -133,14 +133,18 @@
     <div id="errorDisplay" class="error-msg"></div>
 
     <script>
+        let currentFileName = 'top.json';
+
         function handleFileSelect(input) {
             const file = input.files[0];
             if (!file) return;
 
+            currentFileName = file.name;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('inputJson').value = e.target.result;
-                convertJson();
+                convertJson(); 
             };
             reader.readAsText(file);
             input.value = ''; 
@@ -150,7 +154,6 @@
             const inputStr = document.getElementById('inputJson').value.trim();
             
             if (!inputStr) {
-
                 document.getElementById('outputJson').value = "";
                 showError("");
                 return;
@@ -216,7 +219,9 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'top.json';
+            
+            a.download = currentFileName;
+            
             a.click();
             URL.revokeObjectURL(url);
         }
